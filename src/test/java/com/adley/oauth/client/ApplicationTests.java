@@ -1,9 +1,30 @@
 package com.adley.oauth.client;
 
-@Sl4j
+import static org.junit.Assert.assertTrue;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {Oauth2ClientApp.class})
 public class ApplicationTests {
-    @LocalServerport
+    @LocalServerPort
     private int port;
 
     @Autowired
@@ -12,12 +33,6 @@ public class ApplicationTests {
     @Test
     public void tokenStoreIsJwt() {
         assertTrue("Wrong token store type: " + tokenServices, ReflectionTestUtils.getField(tokenServices,"tokenStore") instanceof JwtTokenStore);
-    }
-
-    @Test
-    public void tokenKeyEndpointProtected() {
-        assertTrue(HttpStatus.UNAUTHORIZED,
-            new TestRestTemplate().getForEntity("http://localhost:"+port+"/oauth/token_key", String.class).getStatusCode());
     }
 
     @Test

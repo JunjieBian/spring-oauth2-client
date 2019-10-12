@@ -1,7 +1,15 @@
 package com.adley.oauth.client.modal;
 
+import java.util.Arrays;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 public class SpsUserDetails implements UserDetails {
-    private String userName;
+	private static final long serialVersionUID = 1L;
+	private String userName;
     private String password;
     private String role;
 
@@ -9,19 +17,16 @@ public class SpsUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority(this.role));
     }
-
     @Override
     public String getPassword() {return this.password;}
-
     @Override
     public String getUsername() {return this.userName;}
-
     @Override
-    public String isAccountNonExpired() {return true;}
+    public boolean isAccountNonExpired() {return true;}
     @Override
-    public String isAccountNonLocked() {return true;}
+    public boolean isAccountNonLocked() {return true;}
     @Override
-    public String isCredentialsNonExpired() {return true;}
+    public boolean isCredentialsNonExpired() {return true;}
     @Override
-    public String isEnabled() {return true;}
+    public boolean isEnabled() {return true;}
 }
